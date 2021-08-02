@@ -13,9 +13,6 @@ export const collectPages = (
     let { data = {}, content = raw } = /\.html$/.test(file)
       ? matterHTML(raw)
       : matterMD(raw);
-    if (/\.mdx$/.test(file))
-      for (const [k, v] of Object.entries(data))
-        content += `\n\nexport const ${k} = ${JSON.stringify(v)}`;
     pages.push({ url, input: file, data });
     output[url] = content;
   }

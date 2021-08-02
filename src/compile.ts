@@ -1,3 +1,4 @@
+import { isMdjsContent } from "./utils";
 import type { Page, Context } from "./types";
 import type {
   SourceTree,
@@ -9,15 +10,34 @@ export const compilePages = async (
   pages: Page[],
   output: SourceTree,
   __context: Context,
-  registry: BuildStepArgs["registry"]
+  registry: BuildStepArgs["registry"],
+  hasDefaultMdjsLayout: boolean
 ): Promise<void> => {
-  for (const { input, url } of pages.filter((p) => /\.mdx?$/.test(p.input))) {
-    // Inject context for mdx , TODO for mdjs
-    if (/\.mdx$/.test(input))
+  for (const page of pages.filter((p) => /\.mdx?$/.test(p.input))) {
+    const { input, url, data } = page;
+    const ext = path.extname(input).slice(1);
+    if (ext === "mdx") {
+      for (const [k, v] of Object.entries(data)) {
+        output[url] += `\n\nexport const ${k} = ${JSON.stringify(v)}`;
+      }
       output[url] += `\n\nexport const __context = ${JSON.stringify(
         __context
       )};`;
-    const compiler = await registry[path.extname(input).slice(1)]();
+    } else if (
+      ext === "md" &&
+      (hasDefaultMdjsLayout || isMdjsContent(output[url]))
+    ) {
+      output[url] = `\`\`\`js script
+export const __context = ${JSON.stringify({
+        ...__context,
+        currentPage: page,
+      })};
+export const __internals = {};
+\`\`\`
+
+${output[url]}`;
+    }
+    const compiler = await registry[ext]();
     let { code, html, runtimeCode } = await compiler.compile(
       output[url],
       input
