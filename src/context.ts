@@ -1,5 +1,5 @@
 import type { SourceTree } from "@divriots/studio-compiler-support";
-import type { Page, Context } from "./types";
+import type { Page, Context, GraphNode } from "./types";
 import * as path from "path";
 
 const contextPages = (
@@ -7,7 +7,11 @@ const contextPages = (
   dir: string,
   pages: Page[],
   parent = ""
-): Page[] => {
+): {
+  pages: Page[];
+  pagesGraph: GraphNode[];
+} => {
+  const graph = [] as GraphNode[];
   const result = [];
   for (const item of items) {
     if (typeof item === "string") {
@@ -16,20 +20,20 @@ const contextPages = (
         page.nav = { key: item };
         if (parent) page.nav.parent = parent;
         result.push(page);
+        graph.push({ key: item, page });
       }
     } else {
       const [group, groupItems] = item;
-      for (const page of contextPages(groupItems, dir, pages, group))
-        result.push(page);
+      const subResults = contextPages(groupItems, dir, pages, group);
+      graph.push({ key: group, children: subResults.pagesGraph });
+      for (const page of subResults.pages) result.push(page);
     }
   }
-  return result;
+  return { pages: result, pagesGraph: graph };
 };
 
 export const buildContext = (pages: Page[], tree: SourceTree): Context => {
   let { packages = {} } =
     "studio.config.json" in tree ? JSON.parse(tree["studio.config.json"]) : {};
-  return {
-    pages: contextPages(packages.menu, packages.dir || "", pages),
-  };
+  return contextPages(packages.menu, packages.dir || "", pages);
 };

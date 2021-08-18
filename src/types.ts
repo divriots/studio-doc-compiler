@@ -17,8 +17,15 @@ export interface Page {
   data: Record<string, any>;
 }
 
+export interface GraphNode {
+  key: string;
+  page?: Page;
+  children?: GraphNode[];
+}
+
 export interface Context {
   pages: Page[];
+  pagesGraph: GraphNode[];
 }
 
 export type Layout = {
