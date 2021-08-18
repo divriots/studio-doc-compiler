@@ -9,7 +9,7 @@ const contextPages = (
   parent = ""
 ): {
   pages: Page[];
-  graph: GraphNode[];
+  pagesGraph: GraphNode[];
 } => {
   const graph = [] as GraphNode[];
   const result = [];
@@ -25,11 +25,11 @@ const contextPages = (
     } else {
       const [group, groupItems] = item;
       const subResults = contextPages(groupItems, dir, pages, group);
-      graph.push({ key: group, children: subResults.graph });
+      graph.push({ key: group, children: subResults.pagesGraph });
       for (const page of subResults.pages) result.push(page);
     }
   }
-  return { pages: result, graph };
+  return { pages: result, pagesGraph: graph };
 };
 
 export const buildContext = (pages: Page[], tree: SourceTree): Context => {

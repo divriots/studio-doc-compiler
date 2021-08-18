@@ -25,7 +25,7 @@ export interface GraphNode {
 
 export interface Context {
   pages: Page[];
-  graph: GraphNode[];
+  pagesGraph: GraphNode[];
 }
 
 export type Layout = {
