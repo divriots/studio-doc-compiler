@@ -45,6 +45,7 @@ async function compile({
 
 export {
   compile,
+  compilePages,
   collectPages,
   buildContext,
   renderPages,
