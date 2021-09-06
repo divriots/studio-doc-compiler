@@ -27,7 +27,7 @@ function defaultMdjsConf(
   }
 }
 
-export async function compile({
+async function compile({
   input,
   registry,
   tree,
@@ -35,10 +35,21 @@ export async function compile({
 }: BuildStepArgs): Promise<SourceTree> {
   if (context === "npm_publish") return {};
   const { pages, output } = collectPages(input);
-  const hasDefaultMdjsLayout = tree["mdjs.config.js"];
+  const hasDefaultMdjsLayout = "mdjs.config.js" in tree;
   defaultMdjsConf(hasDefaultMdjsLayout, pages, input, tree, output);
   const __context = buildContext(pages, tree);
   await compilePages(pages, output, __context, registry, hasDefaultMdjsLayout);
   await renderPages(pages, output, __context, registry, tree);
   return output;
 }
+
+export {
+  compile,
+  compilePages,
+  collectPages,
+  buildContext,
+  renderPages,
+  isMdjsContent,
+  Page,
+  defaultMdjsConf,
+};
