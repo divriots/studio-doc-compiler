@@ -32,7 +32,6 @@ export const __context = ${JSON.stringify({
         ...__context,
         currentPage: page,
       })};
-export const __internals = {};
 \`\`\`
 
 ${output[url]}`;
