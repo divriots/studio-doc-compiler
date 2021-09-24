@@ -7,7 +7,7 @@ import { buildContext } from "./context";
 import { compilePages } from "./compile";
 import { renderPages } from "./render";
 import { isMdjsContent } from "./utils";
-import { Page } from "./types";
+import type { Page } from "./types";
 
 export * from "./types";
 
