@@ -15,7 +15,9 @@ const contextPages = (
   const result = [];
   for (const item of items) {
     if (typeof item === "string") {
-      const page = pages.find((p) => p.input.startsWith(path.join(dir, item)));
+      const page = pages.find((p) =>
+        p.input.startsWith(path.join(dir, item) + "/")
+      );
       if (page) {
         page.nav = { key: item };
         if (parent) page.nav.parent = parent;
