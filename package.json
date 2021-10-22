@@ -1,4 +1,4 @@
 {
- "name": "@components-studio/divriots.studio-doc-compiler",
- "version": "0.0.0"
+ "name": "@divriots/studio-doc-compiler",
+ "version": "0.0.28"
 }
