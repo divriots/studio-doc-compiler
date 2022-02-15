@@ -10,10 +10,11 @@ export const collectPages = (
   for (const file in input) {
     const raw = input[file];
     const url = file.replace(/\.mdx?$/, ".html");
+    const renderDocUrl = file.replace(/\.mdx?$/, ".render-doc.js");
     let { data = {}, content = raw } = /\.html$/.test(file)
       ? matterHTML(raw)
       : matterMD(raw);
-    pages.push({ url, input: file, data });
+    pages.push({ url, input: file, renderDocUrl, data });
     output[url] = content;
   }
   return { output, pages };
