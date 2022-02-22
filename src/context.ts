@@ -34,8 +34,15 @@ const contextPages = (
   return { pages: result, pagesGraph: graph };
 };
 
-export const buildContext = (pages: Page[], tree: SourceTree): Context => {
+export const buildContext = (
+  pages: Page[],
+  tree: SourceTree,
+  base: string
+): Context => {
   let { packages = {} } =
     "studio.config.json" in tree ? JSON.parse(tree["studio.config.json"]) : {};
-  return contextPages(packages.menu, packages.dir || "", pages);
+  return {
+    base,
+    ...contextPages(packages.menu, packages.dir || "", pages),
+  };
 };

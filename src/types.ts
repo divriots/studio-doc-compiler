@@ -29,6 +29,7 @@ export interface GraphNode {
 }
 
 export interface Context {
+  base: string;
   pages: Page[];
   pagesGraph: GraphNode[];
 }
