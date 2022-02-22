@@ -7,11 +7,6 @@ export interface Page {
   Input file path relative the the root of the project (i.e. packages/foo/doc/index.md)
   */
   input: string;
-  /** 
-  URL of the JS module with a function to render the DOC dynamically for use in the frontend router.
-  URL is relative to the root of the project (i.e. packages/foo/doc/index.render-doc.js)
-  */
-  renderDocUrl: string;
   /**
   Navigation properties to help reconstruct navigation tree
    */
