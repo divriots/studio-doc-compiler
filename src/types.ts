@@ -15,6 +15,10 @@ export interface Page {
   Front Matter Data
    */
   data: Record<string, any>;
+  /**
+   * Source code of the input file
+   */
+  content: string;
 }
 
 export interface GraphNode {
