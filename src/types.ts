@@ -15,6 +15,10 @@ export interface Page {
   Front Matter Data
    */
   data: Record<string, any>;
+  /**
+   * Source code of the input file
+   */
+  content: string;
 }
 
 export interface GraphNode {
@@ -25,6 +29,7 @@ export interface GraphNode {
 
 export interface Context {
   base: string;
+  mapPageUrlToRenderModuleUrl: (url: string) => string | undefined;
   pages: Page[];
   pagesGraph: GraphNode[];
 }
