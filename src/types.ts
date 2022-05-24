@@ -25,6 +25,7 @@ export interface GraphNode {
 
 export interface Context {
   base: string;
+  mapPageUrlToRenderModuleUrl: (url: string) => string | undefined;
   pages: Page[];
   pagesGraph: GraphNode[];
 }

@@ -37,12 +37,14 @@ const contextPages = (
 export const buildContext = (
   pages: Page[],
   tree: SourceTree,
-  base: string
+  base: string,
+  mapPageUrlToRenderModuleUrl: (string) => string | undefined
 ): Context => {
   let { packages = {} } =
     "studio.config.json" in tree ? JSON.parse(tree["studio.config.json"]) : {};
   return {
     base,
+    mapPageUrlToRenderModuleUrl,
     ...contextPages(packages.menu, packages.dir || "", pages),
   };
 };
