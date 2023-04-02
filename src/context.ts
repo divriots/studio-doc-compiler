@@ -1,10 +1,8 @@
 import type { SourceTree } from "@divriots/studio-compiler-support";
 import type { Page, Context, GraphNode } from "./types";
-import * as path from "path";
 
 const contextPages = (
   items: any[] = [],
-  dir: string,
   pages: Page[],
   parent = ""
 ): {
@@ -15,9 +13,8 @@ const contextPages = (
   const result = [];
   for (const item of items) {
     if (typeof item === "string") {
-      const page = pages.find((p) =>
-        p.input.startsWith(path.join(dir, item) + "/")
-      );
+      const pageFilter = new RegExp(`\/?${item}\/(?:doc\/)?index\..*$`, "i");
+      const page = pages.find((p) => pageFilter.test(p.input));
       if (page) {
         page.nav = { key: item };
         if (parent) page.nav.parent = parent;
@@ -26,7 +23,7 @@ const contextPages = (
       }
     } else {
       const [group, groupItems] = item;
-      const subResults = contextPages(groupItems, dir, pages, group);
+      const subResults = contextPages(groupItems, pages, group);
       graph.push({ key: group, children: subResults.pagesGraph });
       for (const page of subResults.pages) result.push(page);
     }
@@ -45,6 +42,6 @@ export const buildContext = (
   return {
     base,
     mapPageUrlToRenderModuleUrl,
-    ...contextPages(packages.menu, packages.dir || "", pages),
+    ...contextPages(packages.menu, pages),
   };
 };
