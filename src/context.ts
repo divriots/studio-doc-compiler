@@ -1,5 +1,6 @@
 import type { SourceTree } from "@divriots/studio-compiler-support";
 import type { Page, Context, GraphNode } from "./types";
+import { join } from "path";
 
 const contextPages = (
   items: any[] = [],
@@ -13,8 +14,8 @@ const contextPages = (
   const result = [];
   for (const item of items) {
     if (typeof item === "string") {
-      const pageFilter = new RegExp(`\/?${item}\/(?:doc\/)?index\..*$`, "i");
-      const page = pages.find((p) => pageFilter.test(p.input));
+      const pageFilter = new RegExp(`\/${item}\/(?:doc\/)?index\..*$`, "i");
+      const page = pages.find((p) => pageFilter.test(join("/", p.input)));
       if (page) {
         page.nav = { key: item };
         if (parent) page.nav.parent = parent;
